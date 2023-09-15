@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script> 
+  
+    <link rel="stylesheet" href="./game.css">
+   
+
+</head>
+
+<body background="./game.jpg">
+
+  <div class="container ">
+    <h1 id="heading"><b>Numbers Game</b></h1><br><br>
+   
+    <div class="row justify-content-md-center justify-content-md-around">
+
+    <div class="col col-lg-2 border border-4  box1 ">
+
+        <h4>Hint</h4>
+       <input id="hintv" type="number" readonly />
+
+   </div>
+      
+   <div class="col-md-auto border border-4  box3">
+        <h4>Timer</h4>
+        <input id="time" type="number" readonly />
+   </div>
+      
+   <div class="col col-lg-2 border border-4 border border-info-subtle box4">
+        <h4>Score</h4>
+        <input id="scores" type="number" readonly />
+    </div>
+    </div>
+   
+    <div class="shufflebutton">
+
+      <button class="mixAgain" onclick="generateBtns()">
+        <h5><b>shufflebutton</b></h5>
+      </button>
+    
+    </div>
+
+    <div class="button box2">
+
+    </div>
+
+    </div>
+    <script>
+    
+
+var hint = 0;
+var score = 0;
+var totalTimer = 60;
+var mySound;
+var myMusic;
+
+
+function NewHint() {
+  hint = generateRandonNo();
+  document.getElementById("hintv").value = hint;
+}
+
+function generateBtns() {
+
+
+  let btns = "";
+  let buttons = document.querySelector(".button");
+  for (let i = 0; i < 100; i++) {
+
+    btns += `<button class="gameBtn">${generateRandonNo()}</button>`;
+    buttons.innerHTML = btns;
+
+  }
+}
+
+
+
+
+
+function generateRandonNo() {
+
+  let rNo = Math.floor(Math.random() * 100);
+  return rNo;
+  console.log(rNo);
+
+}
+
+let buttons = document.querySelector(".button");
+buttons.addEventListener("click", (e) => {
+  console.log(e.target.innerText);
+  let clickedNo = Number(e.target.innerText);
+
+  if (clickedNo === hint) {
+    NewHint();
+    generateBtns();
+    addScore();
+  } else {
+
+    alert("Wrong number");
+    generateBtns();
+    if (score > 0) {
+      minusScore();
+    }
+
+  }
+
+})
+function addScore() {
+
+  score = score + 10;
+  document.getElementById("scores").value = score;
+}
+
+function gameOver() {
+  console.log(`Game Over With Score = ${score}`);
+  alert(`Game Over With Score = ${score}`);
+  window.location.reload();
+}
+
+function minusScore() {
+  score = score - 10;
+  document.getElementById("scores").value = score;
+}
+
+function runTimer() {
+  var timeOut = setInterval(() => {
+    if (totalTimer > 0) {
+      totalTimer--;
+      document.getElementById("time").value = totalTimer;
+    } else {
+      clearInterval(timeOut);
+      console.log("TimeOut");
+      gameOver();
+    }
+  }, 1000);
+}
+
+
+
+
+runTimer();
+NewHint();
+generateBtns();
+
+
+</script>
+ 
+</body>
+
+</html>
